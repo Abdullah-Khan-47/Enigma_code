@@ -16,13 +16,24 @@ random.shuffle(shuf_lst_3) # Can change later to reflect original orders if data
 dict_1 = {}
 for pos in range(len(alph_lst)):
     dict_1[pos] = shuf_lst_1[pos]
-
 dict_2 = {}
 for pos in range(len(alph_lst)):
     dict_2[pos] = shuf_lst_2[pos]
-
 dict_3 = {}
 for pos in range(len(alph_lst)):
     dict_3[pos] = shuf_lst_3[pos]
 
+# The reflector
+shuf_lst_4 = alph_lst.copy()
+random.shuffle(shuf_lst_4)
+pair_lst_1 = shuf_lst_4[:13]
+pair_lst_2 = shuf_lst_4[13:]
+reflector_pairs = list(zip(pair_lst_1, pair_lst_2)) # Like the rotors, could not find data on reflector pairs. Can modify if data available
 
+def reflector_encryption(letter, pairs=reflector_pairs): # Returns the encoded letter given an input letter and reflector pairings
+    for pair in pairs:
+        if letter in pair:
+            for i in pair:
+                if i!=letter:
+                    return i
+    return None
