@@ -37,3 +37,62 @@ def reflector_encryption(letter, pairs=reflector_pairs): # Returns the encoded l
                 if i!=letter:
                     return i
     return None
+
+# Making a function that moves position in dict by one. Will be used later to change encryption mid message
+def pos_rotation(pos_dict):
+    new_dict = {}
+    for i in pos_dict.items():
+        num = i[0]
+        char = i[1]
+
+        if num == 25:
+            new_dict[0] = char
+        else:
+            new_dict[num+1] = char
+    
+    return new_dict
+
+# Making a test function that returns encrypted text based on inputted text, after one pass through the three dicts.
+def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3):
+
+    alph_lst = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+    chr_count = 0
+    encrypted_text = ''
+    for char in text:
+        chr_count+=1 # Needed to incorporate dial movement
+        indx = alph_lst.index(char.upper())
+
+        # Going through first dict
+        first_dict = pos_rotation(first_dict) # movement with every character
+        new_char = first_dict[indx]
+        indx_renewed = alph_lst.index(new_char)
+
+        # Going through second dict
+        # if chr_count%26==0: # movement with every 26th character. used for re-encryption on second and third dict, will incorporate later
+        #     second_dict = pos_rotation(second_dict)
+        new_char = second_dict[indx_renewed] 
+        indx_renewed = alph_lst.index(new_char)
+
+        # Going through third dict
+        # if chr_count%676==0: # movement with every 26X26th character
+        #     third_dict = pos_rotation(third_dict)
+        new_char = third_dict[indx_renewed]
+        indx_renewed = alph_lst.index(new_char)
+
+        # Reflector
+        new_char = reflector_encryption(new_char)
+
+        # Going back through the dicts
+        third_index = list(third_dict.keys())[list(third_dict.values()).index(new_char)]
+        new_char = alph_lst[third_index]
+
+        second_index = list(second_dict.keys())[list(second_dict.values()).index(new_char)]
+        new_char = alph_lst[second_index]
+        first_index = list(first_dict.keys())[list(first_dict.values()).index(new_char)]
+        new_char = alph_lst[first_index]
+        
+
+        encrypted_text+=new_char
+    
+    return encrypted_text, first_dict, second_dict, third_dict
