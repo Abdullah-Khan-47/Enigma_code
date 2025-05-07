@@ -4,14 +4,14 @@ import sys
 # letter list
 alph_lst = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
-# making three copies that will represent the rotors in the enigma machine
-shuf_lst_1 = alph_lst.copy()
-shuf_lst_2 = alph_lst.copy()
-shuf_lst_3 = alph_lst.copy()
+# making three randomly sorted copies that will represent the rotors in the enigma machine
+shuf_lst_1 = ['A', 'B', 'E', 'R', 'C', 'T', 'W', 'G', 'M', 'U', 'Z', 'P', 'X', 'H', 'F', 'J', 'O', 'D', 'N', 'L', 'I', 'S', 'Q', 'V', 'K', 'Y']
+shuf_lst_2 = ['W', 'V', 'Y', 'J', 'L', 'F', 'X', 'U', 'B', 'T', 'C', 'I', 'G', 'K', 'N', 'S', 'P', 'D', 'R', 'A', 'H', 'E', 'M', 'O', 'Q', 'Z']
+shuf_lst_3 = ['V', 'D', 'S', 'K', 'R', 'E', 'H', 'C', 'W', 'P', 'J', 'Q', 'L', 'U', 'G', 'T', 'O', 'X', 'Y', 'F', 'A', 'N', 'M', 'Z', 'I', 'B']
 
-random.shuffle(shuf_lst_1) # Giving each a random order because I could not find a 
-random.shuffle(shuf_lst_2) # historical reference to the original order in any of the five rotors
-random.shuffle(shuf_lst_3) # Can change later to reflect original orders if data available
+# Giving each a random order because I could not find a 
+# historical reference to the original order in any of the five rotors
+# Can change later to reflect original orders if data available
 
 # Turning the lists into dictionaries to keep track of letter positions
 dict_1 = {}
@@ -25,8 +25,7 @@ for pos in range(len(alph_lst)):
     dict_3[pos] = shuf_lst_3[pos]
 
 # The reflector
-shuf_lst_4 = alph_lst.copy()
-random.shuffle(shuf_lst_4)
+shuf_lst_4 = ['P', 'G', 'L', 'E', 'F', 'S', 'U', 'J', 'Z', 'A', 'H', 'V', 'M', 'R', 'W', 'D', 'B', 'X', 'I', 'C', 'O', 'T', 'Y', 'N', 'Q', 'K']
 pair_lst_1 = shuf_lst_4[:13]
 pair_lst_2 = shuf_lst_4[13:]
 reflector_pairs = list(zip(pair_lst_1, pair_lst_2)) # Like the rotors, could not find data on reflector pairs. Can modify if data available
@@ -70,14 +69,14 @@ def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_di
         indx_renewed = alph_lst.index(new_char)
 
         # Going through second dict
-        # if chr_count%26==0: # movement with every 26th character. used for re-encryption on second and third dict, will incorporate later
-        #     second_dict = pos_rotation(second_dict)
+        if chr_count%26==0: # movement with every 26th character. used for re-encryption on second and third dict, will incorporate later
+            second_dict = pos_rotation(second_dict)
         new_char = second_dict[indx_renewed] 
         indx_renewed = alph_lst.index(new_char)
 
         # Going through third dict
-        # if chr_count%676==0: # movement with every 26X26th character
-        #     third_dict = pos_rotation(third_dict)
+        if chr_count%676==0: # movement with every 26X26th character
+            third_dict = pos_rotation(third_dict)
         new_char = third_dict[indx_renewed]
         indx_renewed = alph_lst.index(new_char)
 
@@ -96,4 +95,7 @@ def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_di
 
         encrypted_text+=new_char
     
-    return encrypted_text, first_dict, second_dict, third_dict
+    return encrypted_text
+
+test = text_rotary_encryption('hellohelpallahgivemetheabilitytobeacompetentpersonandblessmewithasuccessfullifeCraftingaperfectfivehundredcharactertextdemandsprecisionEveryletterspaceandmarkmattersensuringwedonotexceedtheexactcountIfasinglecharactergoesbeyondwefailThereforewemeticulouslychoosewordsThisdemonstrationhighlightsourcarefulapproachshortsentencescontrolledlengthmeaningfulcontentFinallyletsconfirmthatthistextmeetsthelimitbycountingeverysinglecharacterpreciselyThisfinallineensureswereachfivehundredexactlyYes')
+print(test)
