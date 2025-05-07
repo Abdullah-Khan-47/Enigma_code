@@ -1,4 +1,5 @@
 import random
+import sys
 
 # letter list
 alph_lst = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -52,7 +53,7 @@ def pos_rotation(pos_dict):
     
     return new_dict
 
-# Making a test function that returns encrypted text based on inputted text, after one pass through the three dicts.
+# Making an encryption function that returns encrypted text based on inputted text, after one pass through the three dicts.
 def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3):
 
     alph_lst = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
