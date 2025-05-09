@@ -51,9 +51,49 @@ def pos_rotation(pos_dict):
             new_dict[num+1] = char
     
     return new_dict
+    
+# Making a functiom to ensure that letters tuples are not shared between pairs for plugboard switches
+def plugboard_share_check(tuplst=[]):
+    tups_seen = []
+    for t in tuplst:
+        for i in t:
+            if type(i)!=str:
+                print(f'{i} should not be entered, only letters A-Z.')
+                return False
+            i=i.upper()
+            if i in tups_seen:
+                print(f'letter {i} should only be entered once for the plugboard.')
+                return False
+            tups_seen.append(i)
+    return True
+
+# Making a function that swaps letter for the plugboard
+def plugboard_switches(text, pairs):
+    switch_dict = {}
+    finallst = []
+    for pair in pairs:
+        switch_dict[pair[0].upper()] = pair[1].upper()
+        switch_dict[pair[1].upper()] = pair[0].upper()
+
+    for char in text:
+        if char.upper() in switch_dict:
+            finallst.append(switch_dict[char.upper()])
+
+        else:
+            finallst.append(char.upper())
+
+    return ''.join(finallst)
+
 
 # Making an encryption function that returns encrypted text based on inputted text, after one pass through the three dicts.
-def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3, dict1_preset=0, dict2_preset=0, dict3_preset=0):
+def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3, dict1_preset=0, dict2_preset=0, dict3_preset=0, plugboard_lst=[]):
+
+    # Checking plugboard letters.
+    if len(plugboard_lst)>0:
+        lst_check = plugboard_share_check(tuplst=plugboard_lst)
+        if lst_check == False:
+            print('Problem with plugboard entries, please try again')
+            return None
 
     # Enigma only had 26 dial faces, each for a letter. because of this, we will restrict the preset values
     if dict1_preset>26 or dict2_preset>26 or dict3_preset>26 or dict1_preset<0 or dict2_preset<0 or dict3_preset<0:
@@ -104,7 +144,25 @@ def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_di
         new_char = alph_lst[second_index]
         first_index = list(first_dict.keys())[list(first_dict.values()).index(new_char)]
         new_char = alph_lst[first_index]
+
+        # Going through the plupboard
+        # if len(plugboard_lst)>0:
+        #     for pair in plugboard_lst:
+        #         for letr in pair:
+        #             letr = letr.upper()
+        #             if letr==new_char:
+        #                 print(letr)
+        #                 print(new_char)
+        #                 print([l for l in pair if l.upper()!=new_char])
+        #                 new_char = [l for l in pair if l.upper()!=new_char][0]
+        #                 encrypted_text+=new_char
+
+
         
         encrypted_text+=new_char
-    
+
+    # Implementing plugboard swaps using the function used for the reflector
+    if len(plugboard_lst)>0:
+        encrypted_text = plugboard_switches(encrypted_text, pairs=plugboard_lst)
+
     return encrypted_text
