@@ -53,7 +53,20 @@ def pos_rotation(pos_dict):
     return new_dict
 
 # Making an encryption function that returns encrypted text based on inputted text, after one pass through the three dicts.
-def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3):
+def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3, dict1_preset=0, dict2_preset=0, dict3_preset=0):
+
+    # Enigma only had 26 dial faces, each for a letter. because of this, we will restrict the preset values
+    if dict1_preset>26 or dict2_preset>26 or dict3_preset>26 or dict1_preset<0 or dict2_preset<0 or dict3_preset<0:
+        print('Preset values should be 1 to 26. Please retry with a different preset value.')
+        return None
+    
+    else:
+        for set1 in range(dict1_preset):
+            first_dict = pos_rotation(first_dict)
+        for set2 in range(dict1_preset):
+            second_dict = pos_rotation(second_dict)
+        for set3 in range(dict1_preset):
+            third_dict = pos_rotation(third_dict)
 
     alph_lst = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
@@ -92,7 +105,6 @@ def text_rotary_encryption(text, first_dict=dict_1, second_dict=dict_2, third_di
         first_index = list(first_dict.keys())[list(first_dict.values()).index(new_char)]
         new_char = alph_lst[first_index]
         
-
         encrypted_text+=new_char
     
     return encrypted_text
