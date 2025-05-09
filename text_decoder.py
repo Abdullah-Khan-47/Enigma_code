@@ -85,8 +85,28 @@ def decryption_rotor_stateset(text, first_dict, second_dict, third_dict):
 
     return first_dict, second_dict, third_dict
 
+# Making a function that swaps letter for the plugboard
+def plugboard_switches(text, pairs):
+    switch_dict = {}
+    finallst = []
+    for pair in pairs:
+        switch_dict[pair[0].upper()] = pair[1].upper()
+        switch_dict[pair[1].upper()] = pair[0].upper()
+
+    for char in text:
+        if char.upper() in switch_dict:
+            finallst.append(switch_dict[char.upper()])
+
+        else:
+            finallst.append(char.upper())
+
+    return ''.join(finallst)
+
 # Making a decryption function that takes an encrypted text as well as dict states and returns the decrypted text
-def text_rotary_decryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3, dict1_preset=0, dict2_preset=0, dict3_preset=0):
+def text_rotary_decryption(text, first_dict=dict_1, second_dict=dict_2, third_dict=dict_3, dict1_preset=0, dict2_preset=0, dict3_preset=0, plugboard_lst=[]):
+
+    if len(plugboard_lst)>0:
+        text = plugboard_switches(text, pairs=plugboard_lst)
 
     # Enigma only had 26 dial faces, each for a letter. because of this, we will restrict the preset values
     if dict1_preset>26 or dict2_preset>26 or dict3_preset>26 or dict1_preset<0 or dict2_preset<0 or dict3_preset<0:
