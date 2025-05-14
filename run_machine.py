@@ -3,6 +3,17 @@ from text_decoder import text_rotary_decryption
 import argparse
 import ast
 
+def check_tuple(tup):
+    try:
+        output = ast.literal_eval(tup)
+        if isinstance(output, tuple):
+            return output
+        else:
+            raise argparse.ArgumentTypeError('Input is not a tuple')
+    except:
+        raise argparse.ArgumentTypeError('Input is not a tuple')
+
+
 def main():
     parser = argparse.ArgumentParser(description='File to be processed in Encryption and Decryption mode.')
     parser.add_argument('text', type=str, help='This is text that needs to be encoded/decoded.')
@@ -22,15 +33,14 @@ def main():
     parser.add_argument('--dict2_preset', type=int, default=0, help='Add a value from 1 to 26(for each letter)')
     parser.add_argument('--dict3_preset', type=int, default=0, help='Add a value from 1 to 26(for each letter)')
 
-    parser.add_argument('--plugboard_lst', nargs="+", default=[], help='Add a multiple tuples as needed')
+    parser.add_argument('--plugboard_lst', nargs="+", type=check_tuple, default=[], help='Add a multiple tuples as needed')
 
-    # --mode needed above?
     args = parser.parse_args()
 
     if args.mode == 'encryption':
         print(f'The encrypted text is: {text_rotary_encryption(text=args.text, first_dict=args.first_dict, second_dict=args.second_dict, third_dict=args.third_dict, dict1_preset=args.dict1_preset, dict2_preset=args.dict2_preset, dict3_preset=args.dict3_preset, plugboard_lst=args.plugboard_lst)}')
     elif args.mode == 'decryption':
-        print(f'The decrypted text is: {text_rotary_decryption(args.text)}')
+        print(f'The decrypted text is: {text_rotary_decryption(text=args.text, first_dict=args.first_dict, second_dict=args.second_dict, third_dict=args.third_dict, dict1_preset=args.dict1_preset, dict2_preset=args.dict2_preset, dict3_preset=args.dict3_preset, plugboard_lst=args.plugboard_lst)}')
     else:
         print('Please specify a mode, either encryption or decryption, and check if text has been added.')
     
