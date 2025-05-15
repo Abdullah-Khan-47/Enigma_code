@@ -13,4 +13,18 @@ You can read more about the total possible(and practical) settings that were pos
 https://uregina.ca/~kozdron/Teaching/Cornell/135Summer06/Handouts/enigma.pdf
 
 ## Usage
+On the terminal, you can use the run_machine.py file to encrypt and/or decrypt.
+
+### Setting Mode
+Set the mode to either "encryption" or "decryption" based on what you would like to do. For example, to encrypting the text 'helloworld', you would run the following:
+python run_machine.py 'helloworld' --mode 'encryption'  # returns 'VHEAVPDYOW'
+
+In order to decrypt this text, you would run the following:
+python run_machine.py 'VHEAVPDYOW' --mode 'decryption'  # returns 'HELLOWORLD'
+
+### Changing Initial State
+The outputs in the previous example were based on base settings. You also have the ability to change these base settings and make your message secure. You have three main options in this case.
+First, you can change the base rotors themselves...
+Second, you can change the initial dial settings on one or more of the three chosen rotors...
+Third, you can choose to swap letter pairs using the plugboard...
 
